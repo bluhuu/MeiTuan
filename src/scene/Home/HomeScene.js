@@ -13,7 +13,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ListView, Image, 
 import { Heading1, Heading2, Paragraph } from '../../widget/Text'
 import { color, Button, NavigationItem, SearchBar, SpacingView } from '../../widget'
 
-import { screen, system } from '../../common'
+import { screen, system, HttpService } from '../../common'
 import api from '../../api'
 
 
@@ -87,30 +87,30 @@ class HomeScene extends PureComponent {
     }
 
     requestRecommend() {
-        fetch(api.recommend)
-            .then((response) => response.json())
-            .then((json) => {
-
-                let dataList = json.data.map(
-                    (info) => {
-                        return {
-                            id: info.id,
-                            imageUrl: info.squareimgurl,
-                            title: info.mname,
-                            subtitle: `[${info.range}]${info.title}`,
-                            price: info.price
-                        }
+        new HttpService(this)
+        .fetchRecommend()
+        .then((json) => {
+            console.log("json: ",json);
+            let dataList = json.map(
+                (info) => {
+                    return {
+                        id: info.id,
+                        imageUrl: info.squareimgurl,
+                        title: info.mname,
+                        subtitle: `[${info.range}]${info.title}`,
+                        price: info.price
                     }
-                )
-                
-                this.setState({
-                    dataList: dataList,
-                    refreshing: false,
-                })
+                }
+            )
+            
+            this.setState({
+                dataList: dataList,
+                refreshing: false,
             })
-            .catch((error) => {
-                this.setState({ refreshing: false })
-            })
+        })
+        .catch((error) => {
+            this.setState({ refreshing: false })
+        })
     }
 
     requestDiscount() {
@@ -135,6 +135,7 @@ class HomeScene extends PureComponent {
 
     onCellSelected(info: Object) {
         StatusBar.setBarStyle('default', false)
+        console.log(info);
         this.props.navigation.navigate('GroupPurchase', { info: info })
     }
 

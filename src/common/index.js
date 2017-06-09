@@ -9,5 +9,6 @@
 import screen from './screen'
 import system from './system'
 import tool from './tool'
+import HttpService from './HttpService'
 
-export {screen, system, tool}
+export {screen, system, tool, HttpService}

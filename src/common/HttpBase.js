@@ -1,6 +1,8 @@
 import __config from './HttpPathConfig'
+// import assign from 'object-assign';
 class HttpBase {
-    constructor() {
+    constructor(that) {
+        this.that = that
         Object.assign(this, { $$basePath: __config.basePath })
         this.__init()
     }
@@ -9,7 +11,7 @@ class HttpBase {
         this.__initMethods()
     }
     __initDefaults() {
-        this.suffix = 'Request'
+        this.suffix = 'Fetch'
         this.instanceSource = { method: [ 'OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH', 'CONNECT', ] }
     }
     __initMethods() {
@@ -20,7 +22,8 @@ class HttpBase {
         }
     }
     __defaultRequest(method = '', url = '', params = {}, header = {}, cache = 'no-cache') {
-        const $$header = Object.assign({}, this.setHeaders(), header)
+        // const $$header = Object.assign({}, this.setHeaders(), header)
+        const $$header = Object.assign({}, header)
         let $$url = this.setUrl(url)
         let $$config=[];
         const encodeparams = (params) => {
@@ -28,9 +31,9 @@ class HttpBase {
             if(typeof params === 'object' && params){  
                 Object.keys(params).forEach(function(val,idx){  
                     if(idx){
-                        str += val + '=' + encodeURIComponent(params[val]);  
-                    }else{
                         str += '&' + val + '=' + encodeURIComponent(params[val]);  
+                    }else{
+                        str += val + '=' + encodeURIComponent(params[val]);  
                     }
                 })  
             }  
@@ -63,6 +66,7 @@ class HttpBase {
             }
             return promise
         }
+        console.log($$config);
         let promise = this.__resolve($$config)
         promise = chainInterceptors(promise, requestInterceptors)
         promise = promise.then(this.__http)
@@ -77,21 +81,21 @@ class HttpBase {
                 }
                 reject(new Error(response.statusText))
             }).then((response) => {
+                console.log(response);
                 return response.json()
             })
     }
     __resolve(res) { return new Promise((resolve, reject) => { resolve(res) }) }
     setUrl(url) { return `${this.$$basePath}${this.$$prefix}${url}` }
-    setHeaders() { return { 'Cookie': 'JSESSIONID=' + wx.getStorageSync('token') + ';', } }
+    // setHeaders() { return { 'Cookie': 'JSESSIONID=' + wx.getStorageSync('token') + ';', } }
     setInterceptors() {
         return [{
             request: (request) => {
-                request.header = request.header || {}
-                request.requestTimestamp = new Date().getTime()
-                if (request.url.indexOf('/elink_scm_purchase') !== -1 && wx.getStorageSync('token')) {
-                    request.header.Cookie = 'JSESSIONID=' + wx.getStorageSync('token') + ";"
-                }
-                // wx.showToast({ title: '加载中', icon: 'loading', duration: 10000, mask: !0, })
+                // request.header = request.header || {}
+                // request.requestTimestamp = new Date().getTime()
+                // if (request.url.indexOf('/elink_scm_purchase') !== -1 && wx.getStorageSync('token')) {
+                //     request.header.Cookie = 'JSESSIONID=' + wx.getStorageSync('token') + ";"
+                // }
                 return request
             },
             requestError: (requestError) => {
@@ -99,16 +103,16 @@ class HttpBase {
                 return requestError
             },
             response: (response) => {
-                response.responseTimestamp = new Date().getTime()
-                if(response.data.msg === "会话超时或未登录！") {
-                    wx.removeStorageSync('token')
-                    wx.redirectTo({ url: '/pages/login/index' })
-                }
-                // wx.hideToast()
+                // response.responseTimestamp = new Date().getTime()
+                // if(response.data.msg === "会话超时或未登录！") {
+                //     wx.removeStorageSync('token')
+                //     wx.redirectTo({ url: '/pages/login/index' })
+                // }
+                let info ={id: 30938019, imageUrl: "http://p0.meituan.net/w.h/deal/d57d5f0644256a3013469edfc1406e8022163.jpg", title: "京八珍", subtitle: "[46店通用]50元代金券1张，可叠加", price: 43.6}
+                this.that.props.navigation.navigate('GroupPurchase', { info: info })
                 return response
             },
             responseError: (responseError) => {
-                // wx.hideToast()
                 return responseError
             },
         }]
