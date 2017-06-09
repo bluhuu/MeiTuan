@@ -29,7 +29,7 @@ class HttpService extends HttpBase {
 
     fetchRecommend(){
         console.log("fun recommend!---");
-        return this.getFetch(this.$$path.recommend)
+        return this.getFetch(url=this.$$path.recommend,null,null,cache='default')
     }
     fetchDiscount(){
         return this.getFetch(this.$$path.Discount)

@@ -22,6 +22,7 @@ import MineScene from './scene/Mine/MineScene'
 
 import WebScene from './widget/WebScene'
 import GroupPurchaseScene from './scene/GroupPurchase/GroupPurchaseScene'
+import LoginScene from './scene/Login/LoginScene'
 
 const lightContentScenes = ['Home', 'Mine']
 
@@ -126,6 +127,9 @@ const Tab = TabNavigator(
                 )
             }),
         },
+        tabLogin: {
+            screen:LoginScene,
+        }
     },
     {
         tabBarComponent: TabBarBottom,
@@ -144,9 +148,10 @@ const Tab = TabNavigator(
 
 const Navigator = StackNavigator(
     {
-        Tab: { screen: Tab },
-        Web: { screen: WebScene },
-        GroupPurchase: { screen: GroupPurchaseScene },
+        Tab           : { screen : Tab },
+        Web           : { screen : WebScene },
+        GroupPurchase : { screen : GroupPurchaseScene },
+        Login         : { screen : LoginScene },
     },
     {
         navigationOptions: {

@@ -1,5 +1,4 @@
 import __config from './HttpPathConfig'
-// import assign from 'object-assign';
 class HttpBase {
     constructor(that) {
         this.that = that
@@ -109,7 +108,7 @@ class HttpBase {
                 //     wx.redirectTo({ url: '/pages/login/index' })
                 // }
                 let info ={id: 30938019, imageUrl: "http://p0.meituan.net/w.h/deal/d57d5f0644256a3013469edfc1406e8022163.jpg", title: "京八珍", subtitle: "[46店通用]50元代金券1张，可叠加", price: 43.6}
-                this.that.props.navigation.navigate('GroupPurchase', { info: info })
+                this.that.props.navigation.navigate('Login')
                 return response
             },
             responseError: (responseError) => {
