@@ -1,5 +1,5 @@
-import __config from './config'
-class ServiceBase {
+import __config from './HttpPathConfig'
+class HttpBase {
     constructor() {
         Object.assign(this, { $$basePath: __config.basePath })
         this.__init()
@@ -19,10 +19,31 @@ class ServiceBase {
             })
         }
     }
-    __defaultRequest(method = '', url = '', params = {}, header = {}, dataType = 'json') {
+    __defaultRequest(method = '', url = '', params = {}, header = {}, cache = 'no-cache') {
         const $$header = Object.assign({}, this.setHeaders(), header)
-        const $$url = this.setUrl(url)
-        const $$config = { url: $$url, data: params, header: $$header, method: method, dataType: dataType, }
+        let $$url = this.setUrl(url)
+        let $$config=[];
+        const encodeparams = (params) => {
+            let str = '';  
+            if(typeof params === 'object' && params){  
+                Object.keys(params).forEach(function(val,idx){  
+                    if(idx){
+                        str += val + '=' + encodeURIComponent(params[val]);  
+                    }else{
+                        str += '&' + val + '=' + encodeURIComponent(params[val]);  
+                    }
+                })  
+            }  
+            return str;
+        }
+        if (method !== 'GET') {
+            $$config = [$$url,{ body: encodeparams(params), headers: $$header, method: method, credentials: 'include', cache:cache }]
+        } else {
+            if(typeof params ==='object' && params){
+                $$url += "?" + encodeparams(params)
+            }
+            $$config = [$$url,{ headers: $$header, method: method, credentials: 'include', cache:cache }]
+        }
         let requestInterceptors = []
         let responseInterceptors = []
         let reversedInterceptors = this.setInterceptors()
@@ -93,4 +114,4 @@ class ServiceBase {
         }]
     }
 }
-export default ServiceBase
+export default HttpBase

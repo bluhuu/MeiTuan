@@ -1,6 +1,6 @@
-import ServiceBase from 'ServiceBase'
+import HttpBase from 'HttpBase'
 
-class Service extends ServiceBase {
+class Service extends HttpBase {
 	constructor() {
 		super()
 		this.$$prefix = ''
