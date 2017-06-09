@@ -27,5 +27,7 @@ module.exports = {
         "react-native/split-platform-components": 2,
         "no-console": 0,
         "prefer-promise-reject-errors": 0,
+        "no-unused-vars":1,
+        "no-undef":1,
     }
 };
