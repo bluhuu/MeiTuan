@@ -26,13 +26,13 @@ class HttpBase {
         let $$url = this.setUrl(url)
         let $$config=[];
         const encodeparams = (params) => {
-            let str = '';  
+            let str = ''
             if(typeof params === 'object' && params){  
-                Object.keys(params).forEach(function(val,idx){  
+                Object.keys(params).forEach(function(val,idx){
                     if(idx){
-                        str += '&' + val + '=' + encodeURIComponent(params[val]);  
+                        str += '&' + val + '=' + encodeURIComponent(params[val])
                     }else{
-                        str += val + '=' + encodeURIComponent(params[val]);  
+                        str += val + '=' + encodeURIComponent(params[val])
                     }
                 })  
             }  
@@ -75,14 +75,14 @@ class HttpBase {
     }
     __http(obj) {
         return fetch(...obj).then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response
-                }
-                reject(new Error(response.statusText))
-            }).then((response) => {
-                console.log(response);
-                return response.json()
-            })
+            if (response.status >= 200 && response.status < 300) {
+                return response
+            }
+            reject(new Error(response.statusText))
+        }).then((response) => {
+            console.log(response);
+            return response.json()
+        })
     }
     __resolve(res) { return new Promise((resolve, reject) => { resolve(res) }) }
     setUrl(url) { return `${this.$$basePath}${this.$$prefix}${url}` }
@@ -107,7 +107,7 @@ class HttpBase {
                 //     wx.removeStorageSync('token')
                 //     wx.redirectTo({ url: '/pages/login/index' })
                 // }
-                let info ={id: 30938019, imageUrl: "http://p0.meituan.net/w.h/deal/d57d5f0644256a3013469edfc1406e8022163.jpg", title: "京八珍", subtitle: "[46店通用]50元代金券1张，可叠加", price: 43.6}
+                // let info ={id: 30938019, imageUrl: "http://p0.meituan.net/w.h/deal/d57d5f0644256a3013469edfc1406e8022163.jpg", title: "京八珍", subtitle: "[46店通用]50元代金券1张，可叠加", price: 43.6}
                 this.that.props.navigation.navigate('Login')
                 return response
             },

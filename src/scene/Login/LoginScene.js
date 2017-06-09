@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
-import { AppRegistry, StyleSheet, Text, Image, View, TextInput } from 'react-native'; 
+import { AppRegistry, StyleSheet, Text, Image, View, TextInput } from 'react-native';
 import {color, Button, NavigationItem, SearchBar, SpacingView} from '../../widget'
 
 export default class LoginScene extends Component {
     static navigationOptions = ({navigation}) => ({
         headerTitle: '登录',
-        headerStyle: {
-            backgroundColor: 'white'
-        }
-    });
+        headerStyle: { backgroundColor: 'white' },
+        header: null
+    })
     constructor(props) {
-        super(props);
+        super(props)
     }
 
     render() {
